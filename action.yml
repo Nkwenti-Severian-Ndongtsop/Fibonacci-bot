@@ -1,0 +1,15 @@
+name: "Fibbot"
+description: "Computes Fibonacci numbers from pull-request content"
+author: "Nkwenti"
+inputs: 
+  enable_fib:
+    description: "Enable Fibonacci COmputation"
+    required: false
+    default: "true"
+  max_threshold:
+    description: "Maximum number limit for Fibonacci calculation"
+    required: false
+    default: "100"
+  runs: 
+    using: "docker"
+    image: "Dockerfile"
