@@ -25,9 +25,10 @@ runs:
       uses: actions/checkout@v4
 
     - name: Set up Rust
-      uses: actions/setup-rust@v1
-      with:
-        rust-version: 'stable'
+  uses: actions-rs/toolchain@v1
+  with:
+    toolchain: stable
+    override: true
 
     - name: Build FibBot
       run: cargo build --release
