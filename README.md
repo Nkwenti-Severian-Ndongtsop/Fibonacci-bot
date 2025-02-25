@@ -12,3 +12,5 @@ We have the action.yml file that takes variable from the workflow file
 
 - This file has all the variables that are passed to my rust binaries during the work flow run
 - This file build and passes arguments directly to all the rust binaries is my project
+
+### break down of the files in the src directory
