@@ -8,7 +8,7 @@ This set up contains so many files whose role will be properly broken down:
 
 We have the action.yml file that takes variable from the workflow file
 
-## Break down of the action.yml file
+### Break down of the action.yml file
 
 - This file has all the variables that are passed to my rust binaries during the work flow run
 - This file build and passes arguments directly to all the rust binaries is my project
