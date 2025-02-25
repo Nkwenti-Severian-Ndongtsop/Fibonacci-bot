@@ -12,6 +12,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Rust
+        uses: actions/setup-rust@v1
+        with:
+          rust-version: 'stable'
+
       - name: Run FibBot
         uses: Nkwenti-Severian-Ndongtsop/Fibonacci-bot@main
         with:
