@@ -17,3 +17,5 @@ We have the action.yml file that takes variable from the workflow file
 - This file build and passes arguments directly to all the rust binaries is my project
 
 ### break down of the files in the src directory
+
+- We have the fibonacci function that handles the fibonacci of all the numbers found in a particular pull_request
