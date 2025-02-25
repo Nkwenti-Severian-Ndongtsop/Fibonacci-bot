@@ -1,16 +1,21 @@
-name: "FibBot Action"
+name: "Run FibBot"
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize]
 
 jobs:
-  test-action:
+  run-fibbot:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Run FibBot
-        uses: ./
+        uses: Nkwenti-Severian-Ndongtsop/Fibonacci-bot@main
+        with:
+          pr_number: ${{ github.event.pull_request.number }}
+          enable_fib: "true"
+          max_threshold: "100"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
