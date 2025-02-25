@@ -23,16 +23,18 @@ runs:
   steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      shell: sh
 
     - name: Set up Rust
       uses: actions/setup-rust@v1
+      shell: sh
       with:
         rust-version: 'stable'
 
     - name: Build FibBot
+      shell: sh
       run: cargo build --release
 
     - name: Run FibBot
-      run: ./target/release/fibbot ${{ inputs.pr_number }} ${{ inputs.enable_fib }} ${{ inputs.max_threshold }}
-      env:
-        github_token: ${{ inputs.github_token }}
+      shell: sh
+      run: ./target/release/fibbot "${{ inputs.pr_number }}" "${{ inputs.enable_fib }}" "${{ inputs.max_threshold }}" "${{ inputs.github_token }}"
