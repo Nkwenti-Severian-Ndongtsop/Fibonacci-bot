@@ -1,21 +1,16 @@
-name: Fibonacci Test
-on: 
-  - push
-  - pull_request
+name: "FibBot Action"
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
 jobs:
-  Fibbot:
+  test-action:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-
-      - name: Build
-        run: cargo build --release
-
-      - name: Run Fibonacci
-        run: ./target/release/fibbot
+      - name: Run FibBot
+        uses: ./

@@ -1,15 +1,24 @@
-name: "Fibbot"
-description: "Computes Fibonacci numbers from pull-request content"
+name: "FibBot"
+description: "Scans Pull_request content for numbers, calculates their Fibonacci numbers, and posts a comment."
 author: "Nkwenti"
-inputs: 
+
+inputs:
   enable_fib:
-    description: "Enable Fibonacci COmputation"
+    description: "Enable Fibonacci calculation (true/false)"
     required: false
     default: "true"
   max_threshold:
-    description: "Maximum number limit for Fibonacci calculation"
+    description: "Max threshold for Fibonacci calculation"
     required: false
     default: "100"
-  runs: 
-    using: "docker"
-    image: "Dockerfile"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build FibBot
+      shell: bash
+      run: cargo build --release
+      
+    - name: Run FibBot
+      shell: bash
+      run: ./target/release/fibbot
