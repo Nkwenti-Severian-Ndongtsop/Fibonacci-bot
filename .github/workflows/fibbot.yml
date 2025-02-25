@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize]
 
+permissions:
+  pull-requests: write
+  contents: read
+
 jobs:
   run-fibbot:
     runs-on: ubuntu-latest
@@ -12,15 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Rust
-        uses: actions/setup-rust@v1
-        with:
-          rust-version: 'stable'
-
       - name: Run FibBot
         uses: Nkwenti-Severian-Ndongtsop/Fibonacci-bot@main
         with:
           pr_number: ${{ github.event.pull_request.number }}
           enable_fib: "true"
           max_threshold: "100"
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}  
