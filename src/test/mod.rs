@@ -1,2 +1,2 @@
-mod fibo_test;
-mod extract_test;
+pub mod fibo_test;
+pub mod extract_test;

@@ -1,7 +1,7 @@
 use reqwest::Client;
 use std::env;
 
-async fn post_comment(pr_content: &str) -> Result<(), reqwest::Error> {
+pub async fn post_comment(pr_content: &str) -> Result<(), reqwest::Error> {
     let repo = env::var("GITHUB_REPOSITORY").expect("GITHUB_REPOSITORY not set");
     let pr_number = env::var("PR_NUMBER")
         .expect("PR_NUMBER not set")

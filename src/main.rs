@@ -1,6 +1,7 @@
-use crate::extract_text::extract_numbers;
-use crate::fibonacci::fibonacci;
-use crate::process_pr_result::process_pr_content;
+use crate::{extract_text::extract_numbers, fibonacci::fibonacci, 
+    process_pr_result::process_pr_content,
+    post_comment_to_github::post_comment,
+};
 use std::env;
 use tokio;
 
@@ -48,6 +49,6 @@ async fn main() {
 
 mod extract_text;
 mod fibonacci;
-mod post_comment;
+mod post_comment_to_github;
 mod process_pr_result;
 mod test;

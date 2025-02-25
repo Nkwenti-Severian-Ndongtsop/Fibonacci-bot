@@ -1,17 +1,38 @@
 name: "FibBot"
-description: "A GitHub Action that calculates Fibonacci numbers for numbers in PR content."
+description: "Scans Pull Request content for numbers, calculates their Fibonacci numbers, and posts a comment."
+author: "Nkwenti"
 
 inputs:
-  github_token:
-    description: "GitHub token to authenticate API requests"
-    required: true
   pr_number:
-    description: "Pull request number"
+    description: "The number of the pull request"
+    required: true
+  enable_fib:
+    description: "Enable Fibonacci calculation (true/false)"
+    required: false
+    default: "true"
+  max_threshold:
+    description: "Max threshold for Fibonacci calculation"
+    required: false
+    default: "100"
+  github_token:
+    description: "GitHub token to interact with GitHub API"
     required: true
 
 runs:
-  using: "docker"
-  image: "Dockerfile"
-  env:
-    GITHUB_TOKEN: ${{ inputs.github_token }}
-    PR_NUMBER: ${{ inputs.pr_number }}
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Rust
+      uses: actions/setup-rust@v1
+      with:
+        rust-version: 'stable'
+
+    - name: Build FibBot
+      run: cargo build --release
+
+    - name: Run FibBot
+      run: ./target/release/fibbot ${{ inputs.pr_number }} ${{ inputs.enable_fib }} ${{ inputs.max_threshold }}
+      env:
+        github_token: ${{ inputs.github_token }}
