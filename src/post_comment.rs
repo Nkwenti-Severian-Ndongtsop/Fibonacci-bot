@@ -8,6 +8,7 @@ async fn post_comment(pr_content: &str) -> Result<(), reqwest::Error> {
         .parse::<u32>()
         .expect("Invalid PR_NUMBER");
 
+    // Use GitHub's built-in token
     let github_token = env::var("GITHUB_TOKEN").expect("GITHUB_TOKEN not set");
 
     let url = format!(
@@ -18,8 +19,9 @@ async fn post_comment(pr_content: &str) -> Result<(), reqwest::Error> {
     let client = Client::new();
     let response = client
         .post(&url)
-        .header("Authorization", format!("token {}", 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))
+        .header("Authorization", format!("Bearer {}", github_token)) // Using Bearer token
         .header("User-Agent", "FibBot")
+        .header("Accept", "application/vnd.github.v3+json")
         .json(&serde_json::json!({ "body": pr_content }))
         .send()
         .await?;

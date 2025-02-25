@@ -1,8 +1,11 @@
 use crate::extract_text::extract_numbers;
 use crate::fibonacci::fibonacci;
+use crate::process_pr_result::process_pr_content;
 use std::env;
+use tokio;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let args: Vec<String> = env::args().collect();
 
     let enable_fib = args.get(1).unwrap_or(&"true".to_string()).to_lowercase() == "true";
@@ -31,8 +34,20 @@ fn main() {
         let fib = fibonacci(number);
         println!("Fibonacci of {} is: {}", number, fib);
     }
+
+    let result = process_pr_content(pr_content);
+
+    println!("{}", result);
+
+    let comment = process_pr_content(pr_content);
+
+    if let Err(e) = post_comment(&comment).await {
+        eprintln!("Error posting comment: {}", e);
+    }
 }
 
 mod extract_text;
 mod fibonacci;
+mod post_comment;
+mod process_pr_result;
 mod test;
