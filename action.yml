@@ -21,4 +21,4 @@ runs:
       
     - name: Run FibBot
       shell: bash
-      run: ./target/release/fibbot
+      run: ./target/release/fibbot "${{ inputs.enable_fib }}" "${{ inputs.max_threshold }}"
