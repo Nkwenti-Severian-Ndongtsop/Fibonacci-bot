@@ -1,29 +1,25 @@
 use reqwest::blocking::Client;
-use serde_json::Value;
 use std::env;
-use std::error::Error;
 
-pub fn get_latest_pr_content() -> Result<String, Box<dyn Error>> {
+pub fn get_pr_body(pr_number: u32) -> Result<String, Box<dyn std::error::Error>> {
+
     let repo = env::var("GITHUB_REPOSITORY")?;
     let token = env::var("GITHUB_TOKEN")?;
-
-    let url = format!("https://api.github.com/repos/{}/pulls?state=open&sort=updated&direction=desc", repo);
+    let url = format!("https://api.github.com/repos/{}/pulls/{}", repo, pr_number);
 
     let client = Client::new();
     let response = client
         .get(&url)
-        .header("User-Agent", "Rust PR Fetcher")
-        .header("Authorization", format!("Bearer {}", token))
-        .send()?
-        .text()?;
+        .header("User-Agent", "FibBot")
+        .bearer_auth(token)
+        .send()?;
 
-    let json: Value = serde_json::from_str(&response)?;
-    
-    if let Some(pr) = json.as_array().and_then(|arr| arr.first()) {
-        if let Some(body) = pr["body"].as_str() {
-            return Ok(body.to_string());
+    if response.status().is_success() {
+        let json: serde_json::Value = response.json()?;
+        if let Some(body) = json.get("body") {
+            return Ok(body.as_str().unwrap_or("").to_string());
         }
     }
 
-    Err("No pull request body found".into())
+    Err("Failed to get pull_request body".into())
 }

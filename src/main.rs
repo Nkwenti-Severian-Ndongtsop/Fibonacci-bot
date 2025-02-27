@@ -1,5 +1,5 @@
 use crate::{
-    extract_text::extract_numbers, fibonacci::fibonacci, get_pull_request::get_latest_pr_content,
+    extract_text::extract_numbers, fibonacci::fibonacci, get_pull_request::get_pr_body,
     post_comment_to_github::post_comment, process_pr_result::process_pr_content_values,
 };
 use std::env;
@@ -21,10 +21,13 @@ async fn main() {
     println!("Max Threshold is: {}", max_threshold);
 
     
+    let pr_number = env::var("PR_NUMBER")
+        .expect("PR_NUMBER not set")
+        .parse::<u32>()
+        .expect("Invalid PR_NUMBER");
     
     
-    
-    let pr_content = get_latest_pr_content().expect("couldn't collect the text");
+    let pr_content = get_pr_body(pr_number).expect("Couldn't get the content of pull_request");
     let numbers = extract_numbers(pr_content.clone());
     println!("Extracted numbers: {:?}", numbers);
     
