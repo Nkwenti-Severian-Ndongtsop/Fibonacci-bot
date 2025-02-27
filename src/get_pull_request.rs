@@ -5,7 +5,7 @@ pub fn get_pr_body(pr_number: u32) -> Result<String, Box<dyn std::error::Error>>
 
     let repo = env::var("GITHUB_REPOSITORY")?;
     let token = env::var("GITHUB_TOKEN")?;
-    let url = format!("https://api.github.com/repos/{}/pulls/{}}files", repo, pr_number);
+    let url = format!("https://api.github.com/repos/{}/pulls/{}/files", repo, pr_number);
 
     let client = Client::new();
     let response = client
