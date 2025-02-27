@@ -1,4 +1,4 @@
-pub fn extract_numbers(text: &str) -> Vec<u32> {
+pub fn extract_numbers(text: String) -> Vec<u32> {
     let mut numbers = Vec::new();
     let mut current_number = String::new();
 
