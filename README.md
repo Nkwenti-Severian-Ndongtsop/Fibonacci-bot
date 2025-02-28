@@ -8,3 +8,5 @@ i'm trying to debug my code since 6.am
 hello, world 
 
 welcome to my project
+
+1 and 2 with 3
