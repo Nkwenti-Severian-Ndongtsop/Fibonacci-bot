@@ -1,7 +1,7 @@
-use crate::{
-    extract_text::extract_numbers, fibonacci::fibonacci,
-    post_comment_to_github::post_comment, process_pr_result::process_pr_content_values,
+use crate::{ fibonacci::fibonacci, get_pull_request::get_pr,
+    post_comment_to_github::post_comment
 };
+
 use std::env;
 use tokio;
 
@@ -20,37 +20,25 @@ async fn main() {
     println!("Fibonacci Calculation Enabled: {}", enable_fib);
     println!("Max Threshold is: {}", max_threshold);
 
-    // let pr_number = env::var("PR_NUMBER")
-    //     .expect("PR_NUMBER not set")
-    //     .parse::<u32>()
-    //     .expect("Invalid PR_NUMBER");
+    let pr_numbers = get_pr().await;
+    println!("Extracted numbers: {:?}", pr_numbers);
 
-        let github_repository = env::var("GITHUB_REPOSITORY").unwrap_or_else(|_| "Nkwenti-Severian-Ndongtsop/Fibonacci-bot".to_string());
-        let github_repository=  github_repository.split("/").collect::<Vec<&str>>();
-        let owner = github_repository[0];
-        let repo = github_repository[1];
-
-        let pull_request = octocrab::instance().pulls( owner,  repo).list_files(1).await.expect("not found");
-        let pr_content = &pull_request.items.first().unwrap().patch.clone().unwrap();
-        
-    let numbers = extract_numbers(pr_content.clone());
-    println!("Extracted numbers: {:?}", numbers);
-    
-    let result = process_pr_content_values(pr_content);
-    for number in numbers {
-        let fib = fibonacci(number);
-        println!("Fibonacci of {} is: {}", number, fib);
+    if pr_numbers.is_empty() {
+        println!("No numbers found in this pull_request.");
     }
-    
-    println!("{}", result);
-
-    if let Err(e) = post_comment(&result).await {
-        eprintln!("Error posting comment: {}", e);
+    let mut response =
+        String::from("#### Fibonacci output of each number in the pull_request is:\n");
+    for &num in &pr_numbers {
+        let fib = fibonacci(num);
+        response.push_str(&format!("- Fibonacci({}) = {}\n", num, fib));
     }
-}
+        if let Err(e) = post_comment(&response).await {
+            eprintln!("Error posting comment: {}", e);
+        }
+    }
 
 mod extract_text;
 mod fibonacci;
+mod get_pull_request;
 mod post_comment_to_github;
-mod process_pr_result;
 mod test;

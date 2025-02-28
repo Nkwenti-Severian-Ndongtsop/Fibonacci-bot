@@ -1,0 +1,11 @@
+use crate::extract_text::extract_numbers;
+
+pub async fn get_pr() -> Vec<u32>{
+
+    let files = octocrab::instance().pulls("Jagoum", "FibBot").list_files(1).await;
+    let files = files.unwrap().items.first().unwrap().patch.clone().unwrap();
+    println!("Pull Resquest Contents:\n{}",files);
+    let nums = extract_numbers(&files.as_str().to_string());
+    println!("Collected Nums: {nums:?}");
+    nums
+ }
