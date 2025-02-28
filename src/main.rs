@@ -20,7 +20,12 @@ async fn main() {
     println!("Fibonacci Calculation Enabled: {}", enable_fib);
     println!("Max Threshold is: {}", max_threshold);
 
-    let pr_numbers = get_pr().await;
+    let pr_number: u64 = env::var("PR_NUMBER")
+        .expect("PR_NUMBER not set")
+        .parse::<u64>()
+        .expect("Invalid PR_NUMBER");
+
+    let pr_numbers = get_pr(pr_number).await;
     println!("Extracted numbers: {:?}", pr_numbers);
 
     if pr_numbers.is_empty() {
