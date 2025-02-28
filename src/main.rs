@@ -1,5 +1,5 @@
 use crate::{
-    extract_text::extract_numbers, fibonacci::fibonacci, get_pull_request::get_pr_body,
+    extract_text::extract_numbers, fibonacci::fibonacci,
     post_comment_to_github::post_comment, process_pr_result::process_pr_content_values,
 };
 use std::env;
@@ -20,13 +20,19 @@ async fn main() {
     println!("Fibonacci Calculation Enabled: {}", enable_fib);
     println!("Max Threshold is: {}", max_threshold);
 
-    let pr_number = env::var("PR_NUMBER")
-        .expect("PR_NUMBER not set")
-        .parse::<u32>()
-        .expect("Invalid PR_NUMBER");
+    // let pr_number = env::var("PR_NUMBER")
+    //     .expect("PR_NUMBER not set")
+    //     .parse::<u32>()
+    //     .expect("Invalid PR_NUMBER");
 
-    
-    let pr_content = get_pr_body(pr_number).expect("Couldn't get the content of pull_request");
+        let github_repository = env::var("GITHUB_REPOSITORY").unwrap_or_else(|_| "Nkwenti-Severian-Ndongtsop/Fibonacci-bot".to_string());
+        let github_repository=  github_repository.split("/").collect::<Vec<&str>>();
+        let owner = github_repository[0];
+        let repo = github_repository[1];
+
+        let pull_request = octocrab::instance().pulls( owner,  repo).list_files(1).await.expect("not found");
+        let pr_content = &pull_request.items.first().unwrap().patch.clone().unwrap();
+        
     let numbers = extract_numbers(pr_content.clone());
     println!("Extracted numbers: {:?}", numbers);
     
@@ -45,7 +51,6 @@ async fn main() {
 
 mod extract_text;
 mod fibonacci;
-mod get_pull_request;
 mod post_comment_to_github;
 mod process_pr_result;
 mod test;

@@ -1,7 +1,7 @@
 use crate::extract_text::extract_numbers;
 use crate::fibonacci::fibonacci;
 
-pub fn process_pr_content_values(pr_content: String) -> String {
+pub fn process_pr_content_values(pr_content: &String) -> String {
     let numbers = extract_numbers(pr_content.to_string());
 
     if numbers.is_empty() {
