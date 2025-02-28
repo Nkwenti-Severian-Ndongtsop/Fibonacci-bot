@@ -25,6 +25,8 @@ async fn main() {
         .parse::<u64>()
         .expect("Invalid PR_NUMBER");
 
+    println!("the pull_request number is: {}",pr_number);
+
     let pr_numbers = get_pr(pr_number).await;
     println!("Extracted numbers: {:?}", pr_numbers);
 
