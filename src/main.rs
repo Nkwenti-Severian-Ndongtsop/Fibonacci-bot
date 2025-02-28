@@ -20,12 +20,11 @@ async fn main() {
     println!("Fibonacci Calculation Enabled: {}", enable_fib);
     println!("Max Threshold is: {}", max_threshold);
 
-    
     let pr_number = env::var("PR_NUMBER")
         .expect("PR_NUMBER not set")
         .parse::<u32>()
         .expect("Invalid PR_NUMBER");
-    
+
     
     let pr_content = get_pr_body(pr_number).expect("Couldn't get the content of pull_request");
     let numbers = extract_numbers(pr_content.clone());
