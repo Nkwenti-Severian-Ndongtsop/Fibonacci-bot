@@ -10,3 +10,5 @@ hello, world
 welcome to my project
 
 1 and 2 with 3
+
+my code is working with 7 and 6
