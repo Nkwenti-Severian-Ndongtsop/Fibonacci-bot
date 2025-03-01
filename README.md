@@ -35,6 +35,5 @@ The function returns a vector of intergers
 This vector of integer is passed onto the my fibonacci function as iterators returning each fiboonacci as a string slice
 
 Now my post_comment function uses Github APIs to make a post request to github server, creating a comment under the pull_request with the fibonacci of numbers gotten from the changes done on the pull_request
-
-2 with 3
    
+5 with 9
