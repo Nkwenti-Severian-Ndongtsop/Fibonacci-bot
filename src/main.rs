@@ -1,6 +1,12 @@
-use crate::{ fibonacci::fibonacci, get_pull_request::get_pr,
-    post_comment_to_github::post_comment
-};
+mod extract_text;
+mod fibonacci;
+mod get_pull_request;
+mod post_comment_to_github;
+
+#[cfg(test)]
+mod test;
+
+use crate::{fibonacci::fibonacci, get_pull_request::get_pr, post_comment_to_github::post_comment};
 
 use std::env;
 use tokio;
@@ -25,7 +31,7 @@ async fn main() {
         .parse::<u64>()
         .expect("Invalid PR_NUMBER");
 
-    println!("the pull_request number is: {}",pr_number);
+    println!("the pull_request number is: {}", pr_number);
 
     let pr_numbers = get_pr(pr_number).await;
     println!("Extracted numbers: {:?}", pr_numbers);
@@ -39,13 +45,7 @@ async fn main() {
         let fib = fibonacci(num);
         response.push_str(&format!("- Fibonacci({}) = {}\n", num, fib));
     }
-        if let Err(e) = post_comment(&response).await {
-            eprintln!("Error posting comment: {}", e);
-        }
+    if let Err(e) = post_comment(&response).await {
+        eprintln!("Error posting comment: {}", e);
     }
-
-mod extract_text;
-mod fibonacci;
-mod get_pull_request;
-mod post_comment_to_github;
-mod test;
+}

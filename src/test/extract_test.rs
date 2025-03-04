@@ -1,4 +1,3 @@
-#[cfg(test)]
 mod tests {
 
     use crate::extract_text::extract_numbers;
