@@ -1,4 +1,3 @@
-#[cfg(test)]
 mod tests {
     use crate::fibonacci::fibonacci;
       
@@ -8,7 +7,7 @@ mod tests {
         assert_eq!(fibonacci(0), 0);
         assert_eq!(fibonacci(1), 1);
         assert_eq!(fibonacci(89), 1779979416004714189);
-        assert_eq!(fibonacci(99), 218922995834555169026);
+        assert_eq!(fibonacci(1000), 354224848179261915075);
     }
 
 }

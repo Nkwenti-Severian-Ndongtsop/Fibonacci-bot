@@ -3,6 +3,9 @@ description: "Scans Pull Request content for numbers, calculates their Fibonacci
 author: "Nkwenti"
 
 inputs:
+  version:
+    description: "The version of fibbot to use"
+    required: true
   pr_number:
     description: "The number of the pull request"
     required: true
@@ -22,12 +25,12 @@ runs:
   using: "composite"
   steps:
     - name: Build FibBot
-      run: cargo build --release
+      run: curl -o fibbot https://github.com/Nkwenti-Severian-Ndongtsop/Fibonacci-bot/releases/download/v${{ inputs.version }}/fibbot
       shell: bash
 
     - name: Run FibBot
       run: |
         export PR_NUMBER="${{ inputs.pr_number }}"
         export GITHUB_TOKEN="${{ inputs.github_token }}"
-        ./target/release/fibbot "${{ inputs.enable_fib }}" "${{ inputs.max_threshold }}"
+        fibbot "${{ inputs.enable_fib }}" "${{ inputs.max_threshold }}"
       shell: bash
